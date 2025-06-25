@@ -32,6 +32,7 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
     const [forwardStack, setForwardStack] = useState<Page[]>([]);
 
     const generatePage = async (searchQuery: string, fromLink: boolean, refresh: boolean) => {
+        setScreenState('loading');
         const context = backStack[backStack.length - 1]?.content || '';
         const requestBody = JSON.stringify({ query: searchQuery, context: context, fromLink: fromLink});
         const response = await fetch('http://localhost:8000/generate', {
@@ -53,7 +54,7 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
         setPageContent(data.page_code);
         setURL(data.url);
         setQuery('');
-        setScreenState('page');
+        setScreenState("page");
     };
 
     const back = () => {

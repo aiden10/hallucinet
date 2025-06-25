@@ -30,7 +30,7 @@ export default function PageComponent() {
     <div
         className="flex-1 overflow-auto bg-white"
         ref={containerRef}
-        dangerouslySetInnerHTML={{ __html: pageContent }}
+        dangerouslySetInnerHTML={{__html: pageContent}}
     />
   );
 }

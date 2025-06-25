@@ -14,7 +14,7 @@ export default function Navbar(){
         setInput(URL);
     }, [URL]);
 
-    return <div className="flex flex-row min-w-full min-h-5 py-3 bg-stone-800">
+    return <div className="flex flex-row min-w-full min-h-5 py-3 bg-stone-800 z-100">
         <svg
             className="max-w-12 px-2 hover:cursor-pointer hover:opacity-75"
             onClick={back}
