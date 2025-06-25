@@ -20,6 +20,7 @@ type BrowserContextType = {
   back: () => void;
   forward: () => void;
   navigate: (content: Page) => void;
+  setScreenState: (state: string) => void;
 };
 
 export const BrowserContext = createContext<BrowserContextType>(null!);
@@ -114,7 +115,8 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
                 generatePage,
                 back,
                 forward,
-                navigate
+                navigate,
+                setScreenState
             }}>
             {children}
         </BrowserContext.Provider>

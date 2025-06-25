@@ -1,6 +1,6 @@
 
 
-import { Page, BrowserContext } from "@/context/BrowserContext";
+import { BrowserContext } from "@/context/BrowserContext";
 import { useContext } from "react";
 
 type windowProps = {
@@ -13,10 +13,12 @@ export default function RecentlyVisitedWindow({title, content, html}: windowProp
     const { navigate } = useContext(BrowserContext);
     
     return <div 
-        className="flex flex-col p-5 min-w-full md:min-w-0 bg-neutral-500 rounded-2xl gap-y-5 hover:cursor-pointer hover:bg-neutral-200 transition-all duration-100"
+        className="flex flex-col p-5 max-w-1/2 min-w-1/2 md:max-w-1/4 md:min-w-1/4 bg-neutral-500 rounded-2xl
+         gap-y-5 hover:cursor-pointer hover:bg-neutral-200 transition-all duration-100
+         hover:scale-120"
         onClick={() => {navigate({"content": html, "url": title})}}
         >
-        <img src={content} alt="page" className="rounded-md object-cover w-full max-h-20"/>
-        <p className="text-[12px] overflow-hidden whitespace-nowrap text-ellipsis">{title}</p>
+        <img src={content} alt="page" className="rounded-md object-cover max-h-20"/>
+        <p className="text-[12px] text-center overflow-hidden whitespace-nowrap text-ellipsis">{title}</p>
     </div>
 }

@@ -1,61 +1,46 @@
-'use client'
+'use client';
 
 import { useContext, useEffect, useRef } from "react";
 import { BrowserContext } from "@/context/BrowserContext";
 import html2canvas from "html2canvas";
 
 export default function PageComponent() {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { generatePage, pageContent, URL } = useContext(BrowserContext);
 
   useEffect(() => {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const doc = iframe.contentDocument || iframe.contentWindow?.document;
-    if (!doc) return;
+    const timeoutId = setTimeout(() => {
+      const links = Array.from(container.querySelectorAll("a"));
+      const handleClick = (e: Event) => {
+        e.preventDefault();
+        const text = (e.target as HTMLAnchorElement).textContent || "";
+        generatePage(text, true, false);
+      };
+      links.forEach(link => link.addEventListener("click", handleClick));
 
-    doc.open();
-    doc.write(pageContent);
-    doc.close();
-
-    setTimeout(() => {
-      html2canvas(doc.body).then(canvas => {
-        const imageData = canvas.toDataURL(); // base64 image
-
+      html2canvas(container).then(canvas => {
+        const imageData = canvas.toDataURL();
         const history = JSON.parse(localStorage.getItem("history") || '[]');
-
-        // Push new history item
-        history.push({
-          url: URL,
-          content: imageData,
-          html: pageContent
-        });
-
+        history.push({ url: URL, content: imageData, html: pageContent });
         localStorage.setItem("history", JSON.stringify(history));
       });
-    }, 200);
 
-    const links = Array.from(doc.querySelectorAll("a"));
+      return () => {
+        links.forEach(link => link.removeEventListener("click", handleClick));
+      };
+    }, 100);
 
-    const handleClick = (e: Event) => {
-      e.preventDefault();
-      const text = (e.target as HTMLAnchorElement).textContent || "";
-      generatePage(text, true, false);
-    };
-
-    links.forEach(link => link.addEventListener("click", handleClick));
-
-    return () => {
-      links.forEach(link => link.removeEventListener("click", handleClick));
-    };
+    return () => clearTimeout(timeoutId);
   }, [pageContent]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      className="flex-1 w-full h-full border-none z-100"
-      sandbox="allow-scripts allow-same-origin"
+    <div
+      ref={containerRef}
+      className="flex-1 w-full h-full overflow-auto bg-white p-4 z-100 mt-5"
+      dangerouslySetInnerHTML={{ __html: pageContent }}
     />
   );
 }

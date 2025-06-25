@@ -16,11 +16,11 @@ export default function AppContent(){
   const { screenState } = useContext(BrowserContext);
 
   return (
-    <div className="h-screen w-screen flex flex-col">
-        <div className="fixed w-full h-[100vh] blur-[4px] bg-[url('/bg.jpg')] bg-cover z--10 bg-cente brightness-60 opacity-60 scale-109"></div>
+    <div className="h-screen w-screen flex flex-col overflow-hidden">
+        <div className="fixed w-full h-screen blur-[4px] bg-[url('/bg.jpg')] bg-cover z--10 bg-cente brightness-60 opacity-60 scale-109"></div>
         <Navbar />
         {screenState === "home" && 
-            <div className="flex flex-col justify-center place-items-center flex-1 gap-y-15 z-100">
+            <div className="flex flex-col justify-center place-items-center flex-1 gap-y-8 md:gap-y-15 z-100">
                 <h1 className={`text-[48px] md:text-[86px] ${monoton.className}
                     bg-gradient-to-r from-indigo-300 via-indigo-500 to-indigo-800 inline-block
                     text-shadow-2xs select-none
