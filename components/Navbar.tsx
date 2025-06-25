@@ -39,7 +39,7 @@ export default function Navbar(){
                     setInput((e.target as HTMLInputElement).value);
                 }}
                 placeholder="search for something or enter address"
-                className="text-white bg-stone-600 rounded-md min-w-2/3 py-1 px-3 ml-10 md:ml-0"
+                className="text-white bg-stone-600 rounded-md min-w-2/3 py-1 px-3 ml-10 md:ml-0 accent-neutral-50"
                 type="text" />
         </form>
     </div>

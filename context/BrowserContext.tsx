@@ -3,7 +3,7 @@
 
 import { createContext, useState } from "react";
 
-type Page = {
+export type Page = {
   url: string;
   content: string;
 };
@@ -19,6 +19,7 @@ type BrowserContextType = {
   generatePage: (query: string, fromLink: boolean, refresh: boolean) => Promise<void>;
   back: () => void;
   forward: () => void;
+  navigate: (content: Page) => void;
 };
 
 export const BrowserContext = createContext<BrowserContextType>(null!);
@@ -55,11 +56,19 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
         setURL(data.url);
         setQuery('');
         setScreenState("page");
+        
+        // update search history
+        if (searchQuery !== ''){
+            var searches = JSON.parse(localStorage.getItem("searches") || '[]');
+            searches.push(searchQuery);
+            localStorage.setItem("searches", JSON.stringify(searches));
+        }
     };
 
     const back = () => {
         if (backStack.length === 1){
             setScreenState("home");
+            setURL("");
             setBackStack([]);
             return;
         }
@@ -83,6 +92,15 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
         setURL(next.url);
     };
 
+    const navigate = (page: Page) => {
+        setBackStack([...backStack, page]);
+        setForwardStack([]);
+        setPageContent(page.content);
+        setURL(page.url);
+        setQuery('');
+        setScreenState("page");
+    }
+
     return (
         <BrowserContext.Provider
             value={{
@@ -96,6 +114,7 @@ export const BrowserProvider = ({ children }: { children: React.ReactNode }) => 
                 generatePage,
                 back,
                 forward,
+                navigate
             }}>
             {children}
         </BrowserContext.Provider>

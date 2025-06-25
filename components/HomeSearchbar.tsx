@@ -13,12 +13,10 @@ export default function HomeSearchbar() {
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="absolute flex top-1/2 left-1/2 transform -translate-x-4/6 md:-translate-x-1/2 -translate-y-1/2 w-1/2"
-    >
+      onSubmit={handleSubmit}>
       <input
         type="text"
-        className="flex-1 bg-neutral-200 rounded-2xl p-3 text-[12px] md:text-[18px] min-w-[30vmax]"
+        className="flex-1 bg-neutral-200 rounded-2xl p-3 text-[12px] md:text-[18px] min-w-[35vmax] md:min-w-[50vmax] accent-slate-600"
         placeholder="search for something or enter address"
         onInput={(e) => {
           setInput((e.target as HTMLInputElement).value);

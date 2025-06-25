@@ -21,7 +21,7 @@ class AIHandler():
         if context != '':
             prompt += f"\nFor context, the user has navigated here from this previous site: {context}"
             
-        prompt += f"\nReturn a single HTML file that contains CSS and JavaScript. Do not include any response status indicators or wrap the file in ```html```. Only respond with the file as a string."
+        prompt += f"\nReturn a single HTML file that contains CSS and JavaScript. Do not include any response status indicators. Only respond with the file as a string."
         try:
             response = self.client.models.generate_content(
                 model="gemini-2.5-flash",
@@ -32,8 +32,8 @@ class AIHandler():
             )
         except errors.ServerError as e:
             return self.template.render(code=e.code, message=e.message, details=e.details)
-            
-        return response.text
+        
+        return response.text.replace('```html', "")
     
     def generate_url(self, page: str) -> str:
         try:

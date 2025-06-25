@@ -8,7 +8,7 @@ export default function Home() {
   
   return (
     <BrowserProvider>
-      <div className="absolute inset-0 bg-black">
+      <div className="bg-black">
         <AppContent/>
       </div>
     </BrowserProvider>
