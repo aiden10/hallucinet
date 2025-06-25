@@ -1,0 +1,92 @@
+
+Screens:
+    - Home screen which shows a search bar
+    - Whatever page the AI has generated
+    - Options page which allows the user to customize their general site preferences or use their own API key.
+
+Each screen will have a Navbar at the top.
+The navbar will be similar to a regular browser navbar and contain:
+    - Back/Forward buttons which function the same as a regular browser
+    - Refresh button which regenerates the page
+    - Search bar which functions the same as the home screen's search bar
+    - Home button? Just to go back to the home screen
+    - If options modal is implemented then there should also be an options button
+
+Globals:
+    - Overall browser history. This could be implemented via localstorage since it should be persistent anyways.
+    - BrowserContext. Context that stores the following:
+        - Session history. forwardStack and backStack. When a new site is visited, push it onto the backStack and clear forwardStack.
+            back():
+                BrowserContext.forwardStack.push(BrowserContext.backStack.pop())
+            forward():
+                BrowserContext.backStack.push(BrowserContext.forwardStack.pop())
+            
+            type Page{
+                url: string;
+                content: string;
+            } will be stored in the stacks.
+
+        - const [pageContent, setPageContent] = useState("");
+        - const [query, setQuery] = useState("");
+        const fromSearchPrompt = "...";
+        const fromLinkPrompt = "...";
+
+        const generatePage = async () => {
+            if (query === "")
+                const response = await fetch("chatgpt.com", {"context": backStack.peek()["content"]});
+            else
+                const response = await fetch("chatgpt.com", {"context": query});
+            setPageContent(response);
+        }
+
+        useEffect(generatePage, [query]);
+
+PageContainer component:
+    type pageProps{
+        pageContent: string;
+    };
+
+    export default function PageComponent({pageContent}: pageProps){
+        const containerRef = useRef<HTMLDivElement>(null);
+        const { setQuery, generatePage } = useContext(BrowserContext);
+        useEffect(() => {
+                const container = containerRef.current;
+                if (!container) return;
+
+                const links = container.querySelectorAll('a');
+                links.forEach((link) => {
+                    link.addEventListener('click', handleClick);
+            });
+
+            return () => {
+                links.forEach((link) => {
+                    link.removeEventListener('click', handleClick);
+                });
+            };
+
+            function handleClick(e: Event) {
+                e.preventDefault();
+                const text = (e.target as HTMLAnchorElement).textContent || '';
+                setQuery(text); 
+                generatePage();
+            }
+        }, [pageContent]);
+
+        return <div ref={containerRef}>
+            dangerouslySetInnerHTML={{ __html: pageContent }}
+        <div/>
+    }
+
+SearchBar component:
+    Has input field, could do autocomplete? 
+    onSubmit(() => {
+        BrowserContext.setQuery(self.value);
+        self.value = "";
+    });
+
+Prompt:
+    The prompt should ask to generate a single file that contains all the HTML, CSS, and JavaScript.
+    A fake url for the site should also be generated. 
+    If the site was navigated to through clicking a link, then the previous site should be included as context.
+
+
