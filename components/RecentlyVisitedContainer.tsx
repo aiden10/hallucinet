@@ -19,7 +19,7 @@ export default function RecentlyVisitedContainer() {
   return (
     <div className="flex flex-col justify-center items-center w-full">
       {history.length === 0 ? (
-        <p className="text-white/50 text-sm text-center">No recent pages yet.</p>
+        <p className="text-white/50 text-sm text-center __className_8f5913">Pages you visit will appear here.</p>
       ) : (
         <div className="flex flex-col md:flex-row min-w-1/2 justify-center items-center gap-10">
           {history

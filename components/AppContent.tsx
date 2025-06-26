@@ -17,7 +17,7 @@ export default function AppContent(){
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
-        <div className="fixed w-full h-screen blur-[4px] bg-[url('/bg.jpg')] bg-cover z--10 bg-cente brightness-60 opacity-60 scale-109"></div>
+        <div className="fixed w-full h-screen blur-[4px] bg-[url('/bg.jpg')] bg-cover opacity-40 brightness-40 scale-109 "></div>
         <Navbar />
         {screenState === "home" && 
             <div className="flex flex-col justify-center place-items-center flex-1 gap-y-8 md:gap-y-15 z-100">
